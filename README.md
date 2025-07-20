@@ -52,9 +52,6 @@ Music player stopped.
 
 ## 📸 Application Preview
 
-> **Tip:** Add your screenshots to a folder named `assets` or `screenshots` in your repo, and reference them below.
-
-
 ```
 music-player-system/
 ├── src/
