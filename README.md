@@ -1,119 +1,154 @@
+# 🎵 Music Player — Full Stack Application
 
-# 🎵 Music Player System
+A full-stack **Music Player** built with **Spring Boot REST API** backend and **JavaFX** frontend, connected to a **MySQL** database using **JPA & Hibernate**.
 
-A **Core Java OOP** console project to manage songs, albums, and playlists in a menu-driven music player.  
-Beginner-friendly—great for learning Java classes, collections, and user interaction!
+---
 
-## 🔧 Tech Stack
-
-- ☕ Java (JDK 8+)
-- 🏗️ Core Java OOP (Classes, Objects)
-- 📚 ArrayList & LinkedList (Collections Framework)
-- 🖥️ Console menu interface (no GUI yet)
-
-## 🎯 Features
-
-- ➕ Add songs to albums
-- 📀 Manage albums and their songs
-- 💽 Build custom playlists across albums
-- ▶️ Play, skip, replay, and remove songs
-- 📑 Display full playlist at any time
-- 🛠️ Completely OOP—easy to expand further
-
-## 🎬 Sample Output
+## 🏗️ Project Architecture
 
 ```
-Welcome to the Music Player System!
-
-Available Actions:
-0 - Quit
-1 - Play next song
-2 - Play previous song
-3 - Replay current song
-4 - List all songs in playlist
-5 - Show menu options
-6 - Remove current song
-
-Now playing: Shape of You
-Select action: 1
-Now playing: Despacito
-Select action: 3
-Replaying: Despacito
-Select action: 4
-
-===== Playlist =====
-1. Shape of You
-2. Despacito
-===================
-
-Select action: 0
-Music player stopped.
-```
-
-## 📸 Application Preview
-
-```
-music-player-system/
-├── src/
-│   ├── Song.java           // Song class (title, duration)
-│   ├── Album.java          // Album class (name, artist, songs)
-│   └── Main.java           // Main method, playlist manager
-├── assets/
-│   ├── menu-example.png
-│   └── playlist-example.png
+musicplayer/
+├── backend/                          ← Spring Boot REST API
+│   ├── src/main/java/com/musicplayer/
+│   │   ├── MusicPlayerApplication.java      ← Main entry point
+│   │   ├── controller/
+│   │   │   ├── SongController.java          ← Song REST endpoints
+│   │   │   ├── AlbumController.java         ← Album REST endpoints
+│   │   │   └── PlaylistController.java      ← Playlist REST endpoints
+│   │   ├── service/
+│   │   │   ├── SongService.java             ← Song business logic
+│   │   │   ├── AlbumService.java            ← Album business logic
+│   │   │   └── PlaylistService.java         ← Playlist business logic
+│   │   ├── repository/
+│   │   │   ├── SongRepository.java          ← JPA Song queries
+│   │   │   ├── AlbumRepository.java         ← JPA Album queries
+│   │   │   └── PlaylistRepository.java      ← JPA Playlist queries
+│   │   └── model/
+│   │       ├── Song.java                    ← Song entity
+│   │       ├── Album.java                   ← Album entity
+│   │       └── Playlist.java                ← Playlist entity
+│   └── src/main/resources/
+│       └── application.properties           ← DB config
+│
+├── frontend/                         ← JavaFX UI
+│   └── src/main/java/com/musicplayer/ui/
+│       └── MusicPlayerApp.java              ← JavaFX UI + REST calls
+│
+├── database/
+│   └── schema.sql                           ← MySQL setup script
+│
 └── README.md
 ```
 
+---
+
+## 🔧 Tech Stack
+
+| Layer | Technology |
+|---|---|
+| **Backend** | Java 17, Spring Boot 3.2 |
+| **REST API** | Spring Web (REST Controllers) |
+| **ORM** | JPA & Hibernate |
+| **Database** | MySQL |
+| **Frontend** | JavaFX |
+| **Build Tool** | Maven |
+| **Architecture** | MVC — Controller → Service → Repository |
+
+---
+
+## 🌐 API Endpoints
+
+### Songs
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/api/songs` | Get all songs |
+| GET | `/api/songs/{id}` | Get song by ID |
+| POST | `/api/songs` | Add new song |
+| PUT | `/api/songs/{id}` | Update song |
+| DELETE | `/api/songs/{id}` | Delete song |
+| GET | `/api/songs/search/artist?name=Ed` | Search by artist |
+| GET | `/api/songs/search/title?name=Shape` | Search by title |
+
+### Albums
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/api/albums` | Get all albums |
+| GET | `/api/albums/{id}` | Get album by ID |
+| POST | `/api/albums` | Add new album |
+| PUT | `/api/albums/{id}` | Update album |
+| DELETE | `/api/albums/{id}` | Delete album |
+
+### Playlists
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/api/playlists` | Get all playlists |
+| GET | `/api/playlists/{id}` | Get playlist by ID |
+| POST | `/api/playlists` | Create new playlist |
+| PUT | `/api/playlists/{id}` | Update playlist |
+| DELETE | `/api/playlists/{id}` | Delete playlist |
+| POST | `/api/playlists/{pId}/songs/{sId}` | Add song to playlist |
+| DELETE | `/api/playlists/{pId}/songs/{sId}` | Remove song from playlist |
+
+---
+
 ## 🚀 How to Run
 
-### 1. Clone & Enter the Folder
-```bash
-git clone https://github.com/your-username/music-player-system.git
-cd music-player-system
+### Step 1: Database Setup
+```sql
+-- Open MySQL Workbench and run:
+source database/schema.sql
 ```
 
-### 2. Compile & Execute
-```bash
-javac src/*.java
-java -cp src Main
+### Step 2: Configure Database
+Open `backend/src/main/resources/application.properties` and update:
+```properties
+spring.datasource.username=root
+spring.datasource.password=your_mysql_password
 ```
 
-### 3. Follow the on-screen menu for actions!
+### Step 3: Run Spring Boot Backend
+```bash
+cd backend
+mvn spring-boot:run
+```
+Backend starts at: `http://localhost:8080`
 
-## 📚 What You'll Learn
+### Step 4: Run JavaFX Frontend
+Add VM options in IntelliJ/Eclipse:
+```
+--module-path "path_to_javafx_lib" --add-modules javafx.controls,javafx.fxml
+```
+Run `MusicPlayerApp.java` as a JavaFX Application.
 
-- Java OOP design: classes, encapsulation, methods
-- Data structures: ArrayList & LinkedList
-- Console input handling & menus
-- Project structure and clean Java code
+---
 
-## ✅ Interview Points
+## ✅ Features
 
-- Clean separation of concerns (`Song`, `Album`, playlist logic)
-- Used `ArrayList` and `LinkedList` for best-performance
-- Encapsulation and class interaction
-- Menu-driven design for easy usability
-- Easily extensible for GUI/audio in future
+- 🎵 View all songs from MySQL database dynamically
+- ➕ Add new songs via UI form (saved via REST API)
+- 🗑️ Delete songs from library
+- 🎶 Create and manage playlists
+- ➕ Add / ➖ Remove songs from playlist
+- ▶️ Play, ⏭ Next, ⏮ Previous controls
+- 🔄 Real-time refresh from backend
 
-## 🔮 Future Ideas
+---
 
-- Swing/JavaFX UI version
-- Actual audio file playback
-- Save/load playlists to disk (file I/O)
-- Song search & filter
-- Integration with streaming APIs
-- Export playlist as .txt or .csv
+## 🧠 Interview Points
+
+- Clean **MVC Architecture**: Controller → Service → Repository
+- **JPA & Hibernate** for ORM — no raw SQL in Java code
+- **REST API** with proper HTTP methods (GET, POST, PUT, DELETE)
+- **@CrossOrigin** for frontend-backend communication
+- **CompletableFuture** for async HTTP calls in JavaFX
+- **Foreign key constraints** in MySQL schema
+- **Many-to-Many** relationship between Playlist and Songs
+
+---
 
 ## 👨‍💻 Author
 
-**Devisetty Rohith**  
-B.Tech Student | Java & OOP Enthusiast
-
-## 📬 Contact
-
-Questions, suggestions, or want to connect?  
-Message or connect via [GitHub](https://github.com/your-username).
-
-**Good luck and happy coding! 🚀**
-
-Let me know if you want customization, actual images added, or any more sections!
+**Devisetty Rohith**
+B.Tech CSE (Data Science) | Java Backend Developer
+GitHub: [github.com/Rohith-sys18](https://github.com/Rohith-sys18)
+LinkedIn: [linkedin.com/in/devisetty-rohith](https://linkedin.com/in/devisetty-rohith)
